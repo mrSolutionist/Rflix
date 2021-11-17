@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="21A559" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="HomePageData" representedClassName="HomePageData" syncable="YES" codeGenerationType="class">
+        <attribute name="mainFile" optional="YES" attributeType="Binary"/>
+    </entity>
+    <entity name="MoviesAndTvShowsViewed" representedClassName="MoviesAndTvShowsViewed" syncable="YES" codeGenerationType="class"/>
+    <elements>
+        <element name="HomePageData" positionX="-63" positionY="-18" width="128" height="44"/>
+        <element name="MoviesAndTvShowsViewed" positionX="-63" positionY="-9" width="128" height="29"/>
+    </elements>
+</model>
