@@ -7,6 +7,10 @@
 
 import Foundation
 
+//FIXME: SHOULD I RENAME IT TO ApiDataManager?
+protocol ApiDataManagerDelegate{
+    func apiData()
+}
 
 struct ApiManager{
   
@@ -26,6 +30,11 @@ struct ApiManager{
     //use this for getting the list of ids of genre
     private let genreListUrl = "genre/movie/list"
     
+    //variable for ApiDataManagerDelegate
+    
+    //TODO: havint useded delegate
+    var apiManagerDelegate : ApiDataManagerDelegate?
+    
     private init (){}
     
     //https://api.themoviedb.org/3/discover/movie?api_key=4aede8b2ecf032bef5691734ca5e1d5a&language=en-US
@@ -33,25 +42,39 @@ struct ApiManager{
     //https://api.themoviedb.org/3/genre/movie/list?api_key=4aede8b2ecf032bef5691734ca5e1d5a
     
     //URLSESSION function
-    private func urlSessionManager(url:URL, complition: ((_ json:GenreTypeModel?) -> () )){
+    private func urlSessionManager(url:URL, complition: @escaping ((_ json:GenreTypeModel?) -> () )){
         
         URLSession.shared.dataTask(with: url) { data, resp, error in
             guard let data = data else {
                 return
             }
+           
             do {
                 let movieJsonObject = try JSONDecoder().decode(GenreTypeModel.self, from: data)
                 
                 //FIXME: should i pass the data  as clousure or as delegate?
                 
                 //passing as clousure :
-                
+                complition(movieJsonObject)
                 
                 
             }
-            catch{
-                print("movie json  ,data error")
+            
+             catch DecodingError.dataCorrupted(let context) {
+                print(context)
+            } catch DecodingError.keyNotFound(let key, let context) {
+                print("Key '\(key)' not found:", context.debugDescription)
+                print("codingPath:", context.codingPath)
+            } catch DecodingError.valueNotFound(let value, let context) {
+                print("Value '\(value)' not found:", context.debugDescription)
+                print("codingPath:", context.codingPath)
+            } catch DecodingError.typeMismatch(let type, let context) {
+                print("Type '\(type)' mismatch:", context.debugDescription)
+                print("codingPath:", context.codingPath)
+            } catch {
+                print("error: ", error)
             }
+            
         }.resume()
     }
     
@@ -62,17 +85,15 @@ struct ApiManager{
     
     
     // STEP 2: LOAD WITH GENRE
-    func loadDataWithGenreKey(genreKeyValue:String) -> GenreTypeModel?{            // for loading the contet with genre key
+    func loadDataWithGenreKey(genreKeyValue:String){            // for loading the contet with genre key
         
         let moviesUrl = URL(string: "\(baseUrl)\(mainListUrl)\(apiKey)\(genreUrl)\(genreKeyValue)")!  //FIXME: GENRE KEY IS PROVIED ALREADY ,CHANGE IT TO DYNAMIC
        urlSessionManager(url:moviesUrl) { json in
             
             //FIXME: save this json to coreData BUT NOT SAVED
-            CoreDataManager.shared.saveObjectForOfflineLoading(jsonData: json!, reference: "home")
-            
-            
+            CoreDataManager.shared.saveObjectForOfflineLoading(jsonData: json!)
         }
-        return nil
+       
     }
     
 }

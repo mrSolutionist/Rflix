@@ -12,6 +12,8 @@ class HomeViewController: UIViewController{
     
     //base image from api models shared instance
     let baseImageUrl = ApiManager.shared.imageUrl
+    //data from core data
+    var apiResponse : ApiResponseData?
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -19,6 +21,7 @@ class HomeViewController: UIViewController{
     
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         //TODO: should i make this just static or singleton? if not needed keep it
         let key = "28"
@@ -68,9 +71,12 @@ extension HomeViewController:UITableViewDataSource{
             let headCell = tableView.dequeueReusableCell(withIdentifier: "headCell", for: indexPath) as! HeadCell
             
             // configure headcell
+            //chances of break or failure if fpre unwarpped homepaagedata
+            if let imageData = apiResponse?.imageData {
+                headCell.configCell(imageData: imageData, url: baseImageUrl)
+            }
            
-            
-            headCell.configCell(json: <#T##GenreTypeModel#>, url: baseImageUrl)
+           
             return headCell
         }
         

@@ -23,9 +23,10 @@ class HeadCell: UITableViewCell {
         
     }
     
-    func configCell(json:GenreTypeModel, url:String){
-//        trendingMovieImage.image = UIImage()
-      
+    func configCell(imageData: Data, url:String){
+            trendingMovieImage.image = UIImage(data: imageData)
     }
+    
+
 
 }
