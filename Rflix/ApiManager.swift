@@ -13,9 +13,9 @@ protocol ApiDataManagerDelegate{
 }
 
 struct ApiManager{
-  
+    
     static let shared = ApiManager()
-
+    
     public let imageUrl = "https://image.tmdb.org/t/p/w500"
     
     private let baseUrl = "https://api.themoviedb.org/3/"
@@ -42,15 +42,15 @@ struct ApiManager{
     //https://api.themoviedb.org/3/genre/movie/list?api_key=4aede8b2ecf032bef5691734ca5e1d5a
     
     //URLSESSION function
-    private func urlSessionManager(url:URL, complition: @escaping ((_ json:GenreTypeModel?) -> () )){
+    private func urlSessionManager(url:URL, complition: @escaping ((_ json:GenreModel?) -> () )){
         
         URLSession.shared.dataTask(with: url) { data, resp, error in
             guard let data = data else {
                 return
             }
-           
+            
             do {
-                let movieJsonObject = try JSONDecoder().decode(GenreTypeModel.self, from: data)
+                let movieJsonObject = try JSONDecoder().decode(GenreModel.self, from: data)
                 
                 //FIXME: should i pass the data  as clousure or as delegate?
                 
@@ -60,7 +60,7 @@ struct ApiManager{
                 
             }
             
-             catch DecodingError.dataCorrupted(let context) {
+            catch DecodingError.dataCorrupted(let context) {
                 print(context)
             } catch DecodingError.keyNotFound(let key, let context) {
                 print("Key '\(key)' not found:", context.debugDescription)
@@ -85,15 +85,28 @@ struct ApiManager{
     
     
     // STEP 2: LOAD WITH GENRE
-    func loadDataWithGenreKey(genreKeyValue:String){            // for loading the contet with genre key
+    func loadDataWithGenreKey(genreKeyValue:String, complition: @escaping (_ json : GenreModel) -> ()){            // for loading the contet with genre key
         
         let moviesUrl = URL(string: "\(baseUrl)\(mainListUrl)\(apiKey)\(genreUrl)\(genreKeyValue)")!  //FIXME: GENRE KEY IS PROVIED ALREADY ,CHANGE IT TO DYNAMIC
-       urlSessionManager(url:moviesUrl) { json in
+        urlSessionManager(url:moviesUrl) { json in
             
+            
+            //MARK: completion json data for populating to Views
+            guard let jsonData = json else {return}
+            complition(jsonData)
+            
+            //MARK: saving to coredata so once loaded data will be fetched from database
             //FIXME: save this json to coreData BUT NOT SAVED
             CoreDataManager.shared.saveObjectForOfflineLoading(jsonData: json!)
         }
-       
+        
+    }
+    
+    func getImageData(imageUrl : String , complition: @escaping (_ imageData : Data?) -> ()){
+        let baseImageUrl = ApiManager.shared.imageUrl
+        let url = URL(string: "\(baseImageUrl)\(imageUrl)")
+        let imageData = try! Data(contentsOf: url!)
+        complition(imageData)
     }
     
 }

@@ -58,22 +58,28 @@ class CoreDataManager{
         }
     }
     
-    func saveObjectForOfflineLoading(jsonData: GenreTypeModel){
+    func saveObjectForOfflineLoading(jsonData: GenreModel){
         //FIXME: DATA NOT SAVED COZ NO CONVERTION DONE. NEEDS TO FIND  A WAY TO SAVE DATA
         
         
         let context = CoreDataManager.shared.persistentContainer.viewContext
         let data = ApiResponseData(context: context)
-        data.backdrop_path = jsonData.backdrop_path
-        guard let imageUrl = jsonData.backdrop_path else { return  }
-        data.adult = jsonData.adult ?? false
-        data.belongs_to_collection = jsonData.belongs_to_collection
-        
-        getImageData(imageUrl: imageUrl) { imageData in
+        let results = jsonData.results![0]
+        data.backdrop_path = results.backdrop_path
+        guard let imageUrl = results.backdrop_path else { return  }
+        data.adult = results.adult ?? false
+
+        ApiManager.shared.getImageData(imageUrl: imageUrl) { imageData in
             data.imageData = imageData
         }
         
-        try! context.save()
+        do {
+            try context.save()
+         
+        }
+        catch{
+            print("error in saving")
+        }
         
         
         
@@ -81,8 +87,4 @@ class CoreDataManager{
 }
 
 
-func getImageData(imageUrl : String , complition: (_ imageData : Data?) -> ()){
-    let baseImageUrl = ApiManager.shared.imageUrl
-    let url = URL(string: "\(baseImageUrl)\(imageUrl)")
-    let imageData = try! Data(contentsOf: url!)
-}
+

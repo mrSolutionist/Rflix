@@ -11,6 +11,9 @@ import UIKit
 class HeadCell: UITableViewCell {
 
     @IBOutlet weak var trendingMovieImage: UIImageView!
+    
+    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var genre: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

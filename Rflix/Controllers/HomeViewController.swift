@@ -13,8 +13,8 @@ class HomeViewController: UIViewController{
     //base image from api models shared instance
     let baseImageUrl = ApiManager.shared.imageUrl
     //data from core data
-    var apiResponse : ApiResponseData?
-    
+    var apiResponseDataBase : ApiResponseData?
+    var apiResponseInitialApiCall : GenreModel?
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -25,7 +25,13 @@ class HomeViewController: UIViewController{
         super.viewDidLoad()
         //TODO: should i make this just static or singleton? if not needed keep it
         let key = "28"
-        ApiManager.shared.loadDataWithGenreKey(genreKeyValue: key)
+        
+        ApiManager.shared.loadDataWithGenreKey(genreKeyValue: key) { json in
+            //FIXME: why self is needed in clousure , search
+            self.apiResponseInitialApiCall = json
+            
+            
+        }
         
         //TODO: MAKE THE OBJ SAVE IN DATA BASSE FOR OFLINE LOADING
         
@@ -65,18 +71,29 @@ extension HomeViewController:UITableViewDataSource{
     //NUMBER OF CELLS
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //MARK: BASE IMAGE URL FOR FETCHING IMAGE
-//        let baseImageUrl = apiManager.imageUrl
+        //        let baseImageUrl = apiManager.imageUrl
         
         if indexPath.row == 0 {             //IF INDEX == 0 MAIN IMAGE CELL
+            
             let headCell = tableView.dequeueReusableCell(withIdentifier: "headCell", for: indexPath) as! HeadCell
             
             // configure headcell
-            //chances of break or failure if fpre unwarpped homepaagedata
-            if let imageData = apiResponse?.imageData {
+            //MARK: get data from dataBase
+            if let imageData = apiResponseDataBase?.imageData {
                 headCell.configCell(imageData: imageData, url: baseImageUrl)
             }
-           
-           
+            
+            //MARK: get data from initial response when databse is none
+            else {
+                if let imageString = apiResponseInitialApiCall?.results![0].backdrop_path {
+                    ApiManager.shared.getImageData(imageUrl: imageString) { imageData in
+                        headCell.configCell(imageData: imageData!, url: self.baseImageUrl)
+                    }
+                    
+                }
+            }
+            
+            
             return headCell
         }
         

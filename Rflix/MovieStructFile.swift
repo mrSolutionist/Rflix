@@ -70,8 +70,11 @@ struct GenreTypeModel : Codable {
 
 	init(from decoder: Decoder) throws {
 		let values = try decoder.container(keyedBy: CodingKeys.self)
+        print(values)
 		adult = try values.decodeIfPresent(Bool.self, forKey: .adult)
+        print(adult)
 		backdrop_path = try values.decodeIfPresent(String.self, forKey: .backdrop_path)
+        print(backdrop_path)
 		belongs_to_collection = try values.decodeIfPresent(String.self, forKey: .belongs_to_collection)
 		budget = try values.decodeIfPresent(Int.self, forKey: .budget)
 		genres = try values.decodeIfPresent([Genres].self, forKey: .genres)

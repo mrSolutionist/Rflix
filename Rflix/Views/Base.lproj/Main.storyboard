@@ -157,9 +157,15 @@
                                                     </buttonConfiguration>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="caption" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U1c-yF-p5J">
-                                                    <rect key="frame" x="178.5" y="444" width="57" height="21"/>
+                                                    <rect key="frame" x="20" y="444" width="374" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="moQ-0M-hUJ">
+                                                    <rect key="frame" x="20" y="366.5" width="374" height="69.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="58"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -167,6 +173,8 @@
                                             <constraints>
                                                 <constraint firstItem="7kX-KO-Euv" firstAttribute="top" secondItem="6tj-zA-akJ" secondAttribute="top" id="3KH-se-LNo"/>
                                                 <constraint firstItem="7kX-KO-Euv" firstAttribute="bottom" secondItem="h7m-3A-3I0" secondAttribute="bottomMargin" id="9bu-Fr-dAM"/>
+                                                <constraint firstItem="moQ-0M-hUJ" firstAttribute="trailing" secondItem="h7m-3A-3I0" secondAttribute="trailingMargin" id="E9D-sv-8yr"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="U1c-yF-p5J" secondAttribute="trailing" constant="5" id="Eff-PQ-0wB"/>
                                                 <constraint firstItem="Wg9-D6-u1n" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7kX-KO-Euv" secondAttribute="trailing" constant="8" symbolic="YES" id="G5T-SM-KuB"/>
                                                 <constraint firstItem="7kX-KO-Euv" firstAttribute="top" secondItem="Wg9-D6-u1n" secondAttribute="top" id="Goq-wg-s2M"/>
                                                 <constraint firstItem="7kX-KO-Euv" firstAttribute="centerX" secondItem="xL8-fB-V6S" secondAttribute="centerX" id="HgA-78-0jY"/>
@@ -175,8 +183,11 @@
                                                 <constraint firstItem="7kX-KO-Euv" firstAttribute="bottom" secondItem="6tj-zA-akJ" secondAttribute="bottom" id="c6A-Ir-yD5"/>
                                                 <constraint firstItem="7kX-KO-Euv" firstAttribute="leading" secondItem="6tj-zA-akJ" secondAttribute="trailing" constant="83" id="gAJ-0z-hXJ"/>
                                                 <constraint firstItem="7kX-KO-Euv" firstAttribute="top" secondItem="U1c-yF-p5J" secondAttribute="bottom" constant="20" id="hku-Wy-rYl"/>
+                                                <constraint firstItem="U1c-yF-p5J" firstAttribute="leading" secondItem="h7m-3A-3I0" secondAttribute="leadingMargin" id="j41-X7-OGg"/>
+                                                <constraint firstItem="moQ-0M-hUJ" firstAttribute="leading" secondItem="h7m-3A-3I0" secondAttribute="leadingMargin" id="jek-bK-Aqs"/>
                                                 <constraint firstAttribute="trailing" secondItem="Wg9-D6-u1n" secondAttribute="trailing" constant="20" id="oXq-1M-add"/>
                                                 <constraint firstItem="6tj-zA-akJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="h7m-3A-3I0" secondAttribute="leading" constant="20" symbolic="YES" id="shW-Gh-tUT"/>
+                                                <constraint firstItem="U1c-yF-p5J" firstAttribute="top" secondItem="moQ-0M-hUJ" secondAttribute="bottom" constant="8" id="yoE-Yz-mIJ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -187,6 +198,8 @@
                                             <constraint firstItem="xL8-fB-V6S" firstAttribute="centerY" secondItem="rDj-71-Opu" secondAttribute="centerY" id="bnS-UD-W07"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="genre" destination="U1c-yF-p5J" id="2hH-Wf-Db6"/>
+                                            <outlet property="title" destination="moQ-0M-hUJ" id="f9n-ok-xYg"/>
                                             <outlet property="trendingMovieImage" destination="xL8-fB-V6S" id="yWH-2e-7bv"/>
                                         </connections>
                                     </tableViewCell>
